@@ -27,7 +27,7 @@ services:
   nodejs:
     image: node:latest
     hostname: nodejs
-    container_name: my-nodejs-app
+    container_name: nodejs-server-for-fiware
     ports:
       - "5000:5000"
     working_dir: /app

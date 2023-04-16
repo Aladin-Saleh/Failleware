@@ -4,8 +4,11 @@ const express           = require('express');
 const app               = express();
 
 const bodyParser        = require('body-parser');
+const riotRoutes        = require('./routes/riot.routes');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 
 
 // Route par default de l'API
@@ -16,6 +19,9 @@ app.get('/', (req, res) => {
         }
     );
 });
+
+// Routes de l'API
+app.use('/api/riot', riotRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log("Serveur démarré sur le port " + process.env.PORT);

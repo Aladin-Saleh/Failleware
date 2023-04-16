@@ -109,6 +109,20 @@ python3 import_champ_to_fiware.py
 python3 import_items_to_fiware.py
 ```
 
+
+### **Configuration de l'application**
+Le fichier .env contient les variables d'environnement de l'application.
+
+```bash
+cd server
+touch .env
+```
+Dans le fichier .env, ajouter les variables suivantes :
+```bash
+PORT=5000
+RIOT_API_KEY=VOTRE_API_KEY
+```
+
 ### **Lancement de l'application**
 Lancement du conteneur Docker de l'application.
 
