@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "71604d92-4121-47ad-9a43-f476ef4def1f",
+		"name": "Failleware",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17618662"
+	},
+	"item": [
+		{
+			"name": "Requête FIWARE",
+			"item": [
+				{
+					"name": "Récupération des entités",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Récupérer les entitées par type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:1026/v2/entities?type=Summoner",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Summoner"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requête API",
+			"item": [
+				{
+					"name": "Récupération d'un invocateur par son nom",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://172.27.96.148:5000/api/riot/summoner/:summonerName",
+							"protocol": "http",
+							"host": [
+								"172",
+								"27",
+								"96",
+								"148"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"riot",
+								"summoner",
+								":summonerName"
+							],
+							"variable": [
+								{
+									"key": "summonerName",
+									"value": "OTP BIG WOLF"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
