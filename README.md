@@ -87,6 +87,28 @@ git clone https://github.com/Aladin-Saleh/Failleware.git
 cd Failleware
 ```
 
+### **Installer les dependances du serveur**
+```bash
+cd server
+npm install
+```
+
+### **Installation des données de jeux**
+L'application utilise les données de jeux de l'API de RIOT GAMES (League of Legend) qui sont "statique", donc l'installation de ces données ne sont à opérer qu'une fois (ou occasionellement).  
+
+Ce lien permet de télécharger les données de jeux si vous ne souhaitez pas les installer via le script Python.
+https://ddragon.leagueoflegends.com/cdn/dragontail-10.10.5.zip
+
+Python est nécessaire pour l'installation des données de jeux.
+https://www.python.org/downloads/  
+
+
+```bash	
+cd ressources
+python3 import_champ_to_fiware.py
+python3 import_items_to_fiware.py
+```
+
 ### **Lancement de l'application**
 Lancement du conteneur Docker de l'application.
 
