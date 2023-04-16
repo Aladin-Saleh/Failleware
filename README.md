@@ -121,6 +121,7 @@ Dans le fichier .env, ajouter les variables suivantes :
 ```bash
 PORT=5000
 RIOT_API_KEY=VOTRE_API_KEY
+FIWARE_URL=VOTRE_ADRESSE_IP:1026
 ```
 
 ### **Lancement de l'application**
