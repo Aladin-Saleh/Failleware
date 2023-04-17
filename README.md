@@ -137,3 +137,15 @@ Les images Docker sont téléchargées et l'application est lancée.
 * Context-broker orion : http://localhost:1026
 * MongoDB (pour le context-broker) port 27017
 * NodeJS (back-end de l'application) port 5000
+
+
+
+# **Differents types de données stockées dans FIWARE**
+
+<!-- Tableau -->
+| Type de données | Description | Attributs |
+| --- | --- | --- |
+| Champion | Informations sur les champions | id, name, title, key, tags, stats, ... |
+| Item | Informations sur les items | id, name, description, plaintext, ... |
+| Summoner | Informations sur les joueurs | id, name, profileIconId, summonerLevel, ... |
+| RankedSummoner | Informations sur les joueurs classés | id, name, profileIconId, summonerLevel, ... |
