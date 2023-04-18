@@ -4,7 +4,7 @@ import requests
  
 i = 0
 
-FIWARE_URL = 'http://127.0.0.1:1026/v2/op/update';
+FIWARE_URL = 'http://172.24.183.37:1026/v2/op/update';
 print("Execution du script d'import des champions dans FIWARE...")
 
 json_emplacement = './champs/'
