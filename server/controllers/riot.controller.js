@@ -697,13 +697,7 @@ module.exports.getMasters = async (req, res) =>
                 code    = 400;
             })
         }
-        
-        
-
-
         // console.log("ngsiObjectJSON", ngsiObjectJSON);
-
-
 
         res.status(200).json({
             message:    'Récupération des informations des challengers',
@@ -718,10 +712,6 @@ module.exports.getMasters = async (req, res) =>
             error: error
         });
     }
-
-
-
-
 
 }
 
@@ -800,14 +790,6 @@ module.exports.getMatchList = async (req, res) =>
             error: error
         });
     }
-
-
-
-
-
-
-
-
 
 }
 
@@ -947,10 +929,6 @@ module.exports.getMatch = async (req, res) =>
             message = "Une erreur est survenue lors de la mise à jour des informations de match dans le contexte FIWARE"
             code    = 400;
         })
-
-
-
-
 
         res.status(200).json({
             message:    'Récupération des informations des matchs',
