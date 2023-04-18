@@ -1,6 +1,6 @@
 // Controller for Riot API (server/controllers/riot.controller.js)
 const axios = require('axios');
-const ngsi  = require('ngsi-parser')
+const ngsi  = require('ngsi-parser');
 const LolApi = require('twisted').LolApi;
 
 
@@ -11,10 +11,16 @@ const api = new LolApi(
 );
 
 
+function removeIrregularCharacters(str) {
+    const regex = /[^a-zA-Z0-9_-]/g; // Expression régulière qui correspond aux caractères non autorisés
+    return str.replace(regex, ''); // Supprime tous les caractères non autorisés
+}
+  
+
 module.exports.getSummoner = async (req, res) => 
 {
     const summonerName  = req.params.summonerName;
-    const region        = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    const region        = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
     var message         = '';
     var code            = 500;
 
@@ -31,9 +37,7 @@ module.exports.getSummoner = async (req, res) =>
     {
 
 
-        const apiSummoner = await api.Summoner.getByName(summonerName, region);
-        
-
+        const apiSummoner = await api.Summoner.getByName(summonerName, region.toUpperCase());
 
 
         // Parcourir les données pour les mettre au format NGSI
@@ -46,7 +50,8 @@ module.exports.getSummoner = async (req, res) =>
 
         const entities      = {};
 
-        entities["id"]      = summoner.name.trim().replace(/ /g, "_");
+        entities["id"]      = removeIrregularCharacters(summoner.name.trim().replace(/ /g, "_"))
+        console.log("entities['id']", removeIrregularCharacters(summoner.name.trim().replace(/ /g, "_")));
         entities["type"]    = "Summoner"; 
         for (const key in summoner)
         {
@@ -73,7 +78,7 @@ module.exports.getSummoner = async (req, res) =>
             data: ngsiObjectJSON
         })
         .catch(error => {
-            console.log("error", error.response);
+            // console.log("error", error.response);
             message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
             code    = 400;            
         })
@@ -96,14 +101,13 @@ module.exports.getSummoner = async (req, res) =>
 
 }
 
-
 module.exports.getLeagues = async (req, res) =>
 {
     const rank      = req.params.rank;
     const queue     = req.params.queue;
     const division  = req.params.division;
     const page      = req.params.page || 1;  
-    const region    = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    const region    = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
 
     const message   = '';
     const code      = 500;
@@ -125,9 +129,10 @@ module.exports.getLeagues = async (req, res) =>
 
     try
     {
-        const apiLeagues = await api.League.entries(queue, division, rank, region, page)
+        const apiLeagues = await api.League.entries(queue, division, rank,region.toUpperCase(), page)
+        // .then(response => console.log("response", response))
         .catch(error => {
-            console.log("error", error.body.status);
+            console.log("error", error);
             message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des leagues"
             code    = error.body.status.status_code || 400;
         });
@@ -146,7 +151,10 @@ module.exports.getLeagues = async (req, res) =>
         {
             const entities      = {};
 
-            entities["id"]      = league.summonerName.trim().replace(/ /g, "_");
+            if (removeIrregularCharacters(league.summonerName.trim().replace(/ /g, "_")).length <= 0) continue;
+            
+            entities["id"]      = removeIrregularCharacters(league.summonerName.trim().replace(/ /g, "_"));
+            console.log("entities['id']", removeIrregularCharacters(league.summonerName.trim().replace(/ /g, "_")));
             entities["type"]    = "RankedSummoner"; 
 
             for (const key in league)
@@ -159,21 +167,21 @@ module.exports.getLeagues = async (req, res) =>
 
         }
 
-        console.log("ngsiObjectJSON", ngsiObjectJSON);
+        // console.log("ngsiObjectJSON", ngsiObjectJSON);
 
-        // const fiwareSummoner = await axios({
-        //     method: 'POST',
-        //     url: `${process.env.FIWARE_URL}/v2/op/update`,
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     data: ngsiObjectJSON
-        // })
-        // .catch(error => {
-        //     console.log("error", error);
-        //     message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
-        //     code    = 400;
-        // })
+        const fiwareSummoner = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+            code    = 400;
+        })
 
 
         res.status(200).json({
@@ -188,17 +196,17 @@ module.exports.getLeagues = async (req, res) =>
         res.status(code).json(
             {
                 message: 'Une erreur est survenue lors de la récupération des informations des leagues',
+                reason: message,
                 error: error
             }
         )
     }
 }
 
-
 module.exports.getRank = async (req, res) =>
 {
     const summonerId   = req.params.summonerId;
-    const region       = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    const region       = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
 
     const message      = '';
     const code         = 500;
@@ -215,7 +223,7 @@ module.exports.getRank = async (req, res) =>
 
     try
     {
-        const apiRank = await api.League.bySummoner(summonerId, region)
+        const apiRank = await api.League.bySummoner(summonerId, region.toUpperCase())
         .catch(error => {
             console.log("error", error.body.status);
             message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des leagues"
@@ -273,5 +281,454 @@ module.exports.getRank = async (req, res) =>
             }
         )
     }
+
+}
+
+module.exports.getChallengers = async (req, res) =>
+{
+    const queue     = req.params.queue;
+    const region    = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
+
+    const message   = '';
+    const code      = 500;
+
+    if (!queue)
+    {
+        res.status(400).json(
+            {
+                message: 'Le paramètre queue est obligatoire'
+            }
+        );
+    }
+
+
+    try 
+    {
+        const apiChallengers = await api.League.getChallengerLeaguesByQueue(queue, region.toUpperCase())
+        .catch(error => {
+            console.log("error", error);
+            message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des challengers"
+            code    = error.body.status.status_code || 400;
+        });
+
+        // Parcourir les données pour les mettre au format NGSI
+        const challengers           = apiChallengers.response['entries'];
+        console.log("challengers", challengers);
+
+        const ngsiObjectJSON = 
+        {
+            "actionType": "APPEND",
+            "entities": []
+        };
+
+        for (const challenger of challengers)
+        {
+            const entities      = {};
+            entities["id"]      =  removeIrregularCharacters(challenger['summonerName']).trim().replace(/ /g, "_");
+
+            if (removeIrregularCharacters(challenger['summonerName']).trim().replace(/ /g, "_").length <= 0) continue;
+
+            console.log("entities['id']", removeIrregularCharacters(challenger['summonerName']).trim().replace(/ /g, "_"));
+            entities["type"]    = "RankedChallengerSummoner";
+
+            for (const key in challenger)
+            {
+                console.log("key", key, "challenger[key]", challenger[key]);
+                entities[key] = ngsi.parseValue(challenger[key]);                
+            }
+            ngsiObjectJSON.entities.push(entities);
+            console.log("entities", ngsiObjectJSON);
+        }
+
+        console.log("ngsiObjectJSON", ngsiObjectJSON);
+
+        const fiwareSummoner = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+            code    = 400;
+        })
+
+        res.status(200).json({
+            message:    'Récupération des informations des challengers',
+            challengers: apiChallengers.response
+        });
+        
+    } 
+    catch (error) 
+    {
+        res.status(code).json({
+            message: 'Une erreur est survenue lors de la récupération des informations des challengers',
+            error: error
+        });
+
+    }
+
+
+}
+
+module.exports.getGrandMasters = async (req, res) =>
+{
+    const queue     = req.params.queue;
+    const region    = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
+
+    const message   = '';
+    const code      = 500;
+
+    if (!queue)
+    {
+        res.status(400).json(
+            {
+                message: 'Le paramètre queue est obligatoire'
+            }
+        );
+    }
+
+
+    try 
+    {
+        const apiGrandMasters = await api.League.getGrandMasterLeagueByQueue(queue, region.toUpperCase())
+        .catch(error => {
+            console.log("error", error);
+            message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des grand Masters"
+            code    = error.body.status.status_code || 400;
+        });
+
+        // Parcourir les données pour les mettre au format NGSI
+        const grandMasters           = apiGrandMasters.response['entries'];
+        console.log("grandMasters", grandMasters);
+
+        const ngsiObjectJSON = 
+        {
+            "actionType": "APPEND",
+            "entities": []
+        };
+
+        for (const grandMaster of grandMasters)
+        {
+            const entities      = {};
+            entities["id"]      =  removeIrregularCharacters(grandMaster['summonerName']).trim().replace(/ /g, "_");
+            if (removeIrregularCharacters(grandMaster['summonerName']).trim().replace(/ /g, "_").length <= 0) continue;
+            console.log("entities['id']", removeIrregularCharacters(grandMaster['summonerName']).trim().replace(/ /g, "_"));
+            entities["type"]    = "RankedGrandMasterSummoner";
+
+            for (const key in grandMaster)
+            {
+                console.log("key", key, "grandMaster[key]", grandMaster[key]);
+                entities[key] = ngsi.parseValue(grandMaster[key]);                
+            }
+            ngsiObjectJSON.entities.push(entities);
+            console.log("entities", ngsiObjectJSON);
+        }
+
+        console.log("ngsiObjectJSON", ngsiObjectJSON);
+
+        const fiwareSummoner = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+            code    = 400;
+        })
+
+        res.status(200).json({
+            message:    'Récupération des informations des challengers',
+            challengers: apiGrandMasters.response
+        });
+        
+    } 
+    catch (error) 
+    {
+        res.status(code).json({
+            message: 'Une erreur est survenue lors de la récupération des informations des challengers',
+            error: error
+        });
+
+    }
+
+}
+
+module.exports.getMasters = async (req, res) =>
+{
+    const queue     = req.params.queue;
+    const region    = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
+
+    const message   = '';
+    const code      = 500;
+
+    if (!queue)
+    {
+        res.status(400).json(
+            {
+                message: 'Le paramètre queue est obligatoire'
+            }
+        );
+    }
+
+    try
+    {
+        const apiMaster = await api.League.getMasterLeagueByQueue(queue, region.toUpperCase())
+        .catch(error => {
+            console.log("error", error);
+            message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des master"
+            code    = error.body.status.status_code || 400;
+        });
+
+        // Parcourir les données pour les mettre au format NGSI
+        const masters           = apiMaster.response['entries'];
+        // console.log("masters", masters);
+
+        const ngsiObjectJSON = 
+        {
+            "actionType": "APPEND",
+            "entities": []
+        };
+
+
+
+        if (masters.length > 10)
+        {
+            // On va devoir faire plusieurs requêtes
+            const nbRequest = Math.ceil(masters.length / 10);
+            console.log("nbRequest", nbRequest);
+            for (let i = 0; i < nbRequest; i++)
+            {
+                const mastersPart = masters.slice(i * 10, (i + 1) * 10);
+                console.log("mastersPart", mastersPart);
+
+                for (const master of mastersPart)
+                {
+                    const entities      = {};
+                    entities["id"]      =  removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_");
+                    if (removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_").length <= 0) continue;
+                    console.log("entities['id']", removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_"));
+                    entities["type"]    = "RankedMasterSummoner";
+        
+                    for (const key in master)
+                    {
+                        // console.log("key", key, "master[key]", master[key]);
+                        entities[key] = ngsi.parseValue(master[key]);                
+                    }
+                    ngsiObjectJSON.entities.push(entities);
+                    // console.log("entities", ngsiObjectJSON);
+                }
+    
+                const fiwareSummoner = await axios({
+                    method: 'POST',
+                    url: `${process.env.FIWARE_URL}/v2/op/update`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    data: ngsiObjectJSON
+                })
+                .catch(error => {
+                    console.log("error", error);
+                    message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+                    code    = 400;
+                })
+
+            }
+        }
+        else
+        {
+            for (const master of masters)
+            {
+                const entities      = {};
+                entities["id"]      =  removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_");
+                if (removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_").length <= 0) continue;
+                console.log("entities['id']", removeIrregularCharacters(master['summonerName']).trim().replace(/ /g, "_"));
+                entities["type"]    = "RankedMasterSummoner";
+    
+                for (const key in master)
+                {
+                    // console.log("key", key, "master[key]", master[key]);
+                    entities[key] = ngsi.parseValue(master[key]);                
+                }
+                ngsiObjectJSON.entities.push(entities);
+                // console.log("entities", ngsiObjectJSON);
+            }
+
+            const fiwareSummoner = await axios({
+                method: 'POST',
+                url: `${process.env.FIWARE_URL}/v2/op/update`,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: ngsiObjectJSON
+            })
+            .catch(error => {
+                console.log("error", error);
+                message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+                code    = 400;
+            })
+        }
+        
+        
+
+
+        // console.log("ngsiObjectJSON", ngsiObjectJSON);
+
+
+
+        res.status(200).json({
+            message:    'Récupération des informations des challengers',
+            challengers: apiMaster.response
+        });
+
+    }
+    catch (error)
+    {
+        res.status(code).json({
+            message: 'Une erreur est survenue lors de la récupération des informations des challengers',
+            error: error
+        });
+    }
+
+
+
+
+
+}
+
+module.exports.getMatchList = async (req, res) =>
+{
+    const puuid    = req.params.puuid;
+    const region    = req.query.region || 'europe'; // Par défaut, on prend l'EUW1
+
+    const message   = '';
+    const code      = 500;
+
+    if (!puuid)
+    {
+        res.status(400).json(
+            {
+                message: 'Le paramètre puuid est obligatoire'
+            }
+        );
+    }
+
+
+    try 
+    {
+        const apiMatchList = await api.MatchV5.list(puuid, region)
+        .catch(error => {
+            console.log("error", error);
+            message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des matchs"
+            code    = error.body.status.status_code || 400;
+        });
+
+
+        // Parcourir les données pour les mettre au format NGSI
+        const matchs           = apiMatchList.response
+        console.log("matchs", matchs);
+        const ngsiObjectJSON =
+        {
+            "actionType": "APPEND",
+            "entities": []
+        }
+
+        const entities = {};
+
+        entities["id"]      = puuid
+        entities["type"]    = "MatchHistory";
+        entities["matchs"]  = ngsi.parseValue(matchs);
+
+        ngsiObjectJSON.entities.push(entities);
+        console.log("ngsiObjectJSON", ngsiObjectJSON);
+
+        const fiwareMatchList = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
+            code    = 400;
+        })
+        
+
+
+        res.status(200).json({
+            message:    'Récupération des informations des matchs',
+            matchs: apiMatchList.response
+        });
+
+    } 
+    catch (error)
+    {   
+        res.status(code).json({
+            message: 'Une erreur est survenue lors de la récupération des informations des matchs',
+            error: error
+        });
+    }
+
+
+
+
+
+
+
+
+
+}
+
+module.exports.getMatch = async (req, res) =>
+{
+    const matchId    = req.params.matchId;
+    const region    = req.query.region || 'europe'; // Par défaut, on prend l'EUW1
+
+    const message   = '';
+    const code      = 500;
+
+    if (!matchId)
+    {
+        res.status(400).json(
+            {
+                message: 'Le paramètre matchId est obligatoire'
+            }
+        );
+    }
+
+
+    try
+    {
+        const apiMatch = await api.MatchV5.get(matchId, region)
+        .catch(error => {
+            console.log("error", error);
+            message = error.body.status.message || "Une erreur est survenue lors de la récupération des informations des matchs"
+            code    = error.body.status.status_code || 400;
+        });
+
+        res.status(200).json({
+            message:    'Récupération des informations des matchs',
+            match: apiMatch.response
+        });
+
+    }
+    catch (error)
+    {
+        res.status(code).json({
+            message: 'Une erreur est survenue lors de la récupération des informations des matchs',
+            error: error
+        });
+    }
+
 
 }

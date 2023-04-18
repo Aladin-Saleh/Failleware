@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
     );
 });
 
+
 // Routes de l'API
 app.use('/api/riot', riotRoutes);
 

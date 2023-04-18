@@ -12,5 +12,19 @@ router.get('/leagues/:rank/:queue/:division/:page', riotController.getLeagues);
 // Récupération du rank d'un summoner par son summonerId
 router.get('/rank/:summonerId', riotController.getRank);
 
+// Récupération des challengers par queue
+router.get('/challengers/:queue', riotController.getChallengers);
+
+// Récupération des masters par queue
+router.get('/masters/:queue', riotController.getMasters);
+
+// Récupération des grands maîtres par queue
+router.get('/grandmasters/:queue', riotController.getGrandMasters);
+
+// Récupération des matchs d'un summoner par son puuid
+router.get('/matchlist/:puuid', riotController.getMatchList);
+
+// Récupération des informations d'un match par son matchId
+router.get('/match/:matchId', riotController.getMatch);
 
 module.exports = router;
