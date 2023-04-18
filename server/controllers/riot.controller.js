@@ -921,9 +921,123 @@ module.exports.getMatch = async (req, res) =>
             code    = error.body.status.status_code || 400;
         });
 
+        const match = apiMatch.response;
+
+        const ngsiObjectJSON =
+        {
+            "actionType": "APPEND",
+            "entities": []
+        }
+
+        const entities = {};
+
+        entities["id"]      = matchId
+        entities["type"]    = "Match";
+
+
+        const metadata = match['metadata'];
+        const info = match['info'];
+        const participants = match['info']['participants'];
+        const teams = match['info']['teams'];
+
+
+
+        entities["gameCreation"] = ngsi.parseValue(info['gameCreation']);
+        entities["gameDuration"] = ngsi.parseValue(info['gameDuration']);
+        entities["gameId"] = ngsi.parseValue(info['gameId']);
+
+
+
+        // Parcours des participants
+        for (const participant of participants)
+        {
+            const teamId = participant['teamId'];
+            const assists = participant['assists'];
+            const kills = participant['kills'];
+            const deaths = participant['deaths'];
+            const champLevel = participant['champLevel'];
+            const totalMinionsKilled = participant['totalMinionsKilled'];
+            const championId = participant['championId'];
+            const championName = participant['championName'];
+            const lane = participant['lane'];
+            const puuid = participant['puuid'];
+            const summonerName = participant['summonerName'];
+            const summonerId = participant['summonerId'];
+            const turretKills = participant['turretKills'];
+            const magicDamageDealtToChampions = participant['magicDamageDealtToChampions'];
+            const physicalDamageDealtToChampions = participant['physicalDamageDealtToChampions'];
+            const trueDamageDealtToChampions = participant['trueDamageDealtToChampions'];
+            const totalDamageDealtToChampions = participant['totalDamageDealtToChampions'];
+            const totalDamageTaken = participant['totalDamageTaken'];
+            const item0 = participant['item0'];
+            const item1 = participant['item1'];
+            const item2 = participant['item2'];
+            const item3 = participant['item3'];
+            const item4 = participant['item4'];
+            const item5 = participant['item5'];
+            const item6 = participant['item6'];
+            const goldEarned = participant['goldEarned'];
+
+            const participantObject = {};
+
+            participantObject["teamId"] = (ngsi.parseValue(teamId))
+            participantObject["assists"] = (ngsi.parseValue(assists))
+            participantObject["kills"] = (ngsi.parseValue(kills))
+            participantObject["deaths"] = (ngsi.parseValue(deaths))
+            participantObject["champLevel"] = (ngsi.parseValue(champLevel))
+            participantObject["totalMinionsKilled"] = (ngsi.parseValue(totalMinionsKilled))
+            participantObject["championId"] = (ngsi.parseValue(championId))
+            participantObject["championName"] = (ngsi.parseValue(championName))
+            participantObject["lane"] = (ngsi.parseValue(lane))
+            participantObject["puuid"] = (ngsi.parseValue(puuid))
+            participantObject["summonerName"] = (ngsi.parseValue(summonerName))
+            participantObject["summonerId"] = (ngsi.parseValue(summonerId))
+            participantObject["turretKills"] = (ngsi.parseValue(turretKills))
+            participantObject["magicDamageDealtToChampions"] = (ngsi.parseValue(magicDamageDealtToChampions))
+            participantObject["physicalDamageDealtToChampions"] = (ngsi.parseValue(physicalDamageDealtToChampions))
+            participantObject["trueDamageDealtToChampions"] = (ngsi.parseValue(trueDamageDealtToChampions))
+            participantObject["totalDamageDealtToChampions"] = (ngsi.parseValue(totalDamageDealtToChampions))
+            participantObject["totalDamageTaken"] = (ngsi.parseValue(totalDamageTaken))
+            participantObject["item0"] = (ngsi.parseValue(item0))
+            participantObject["item1"] = (ngsi.parseValue(item1))
+            participantObject["item2"] = (ngsi.parseValue(item2))
+            participantObject["item3"] = (ngsi.parseValue(item3))
+            participantObject["item4"] = (ngsi.parseValue(item4))
+            participantObject["item5"] = (ngsi.parseValue(item5))
+            participantObject["item6"] = (ngsi.parseValue(item6))
+            participantObject["goldEarned"] = (ngsi.parseValue(goldEarned))
+
+            // console.log("participantObject", participantObject);
+            
+            // entities[championId] = ngsi.parseAttrs([participantObject]);
+            entities[championId] = ngsi.parseValue([participantObject]);
+
+        }
+        console.log("entities", entities);
+        ngsiObjectJSON.entities.push(entities);
+        // console.log("ngsiObjectJSON", ngsiObjectJSON);
+
+        const fiwareSummoner = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations de match dans le contexte FIWARE"
+            code    = 400;
+        })
+
+
+
+
+
         res.status(200).json({
             message:    'Récupération des informations des matchs',
-            match: apiMatch.response
+            match:      apiMatch.response
         });
 
     }
