@@ -294,4 +294,3 @@ Les images Docker sont téléchargées et l'application est lancée.
 | RankedChallengerSummoner | Informations sur les joueurs classés challenger | id, name, profileIconId, summonerLevel, ... |
 | RankedGrandMasterSummoner | Informations sur les joueurs classés grand maître | id, name, profileIconId, summonerLevel, ... |
 | RankedMasterSummoner | Informations sur les joueurs classés maître | id, name, profileIconId, summonerLevel, ... |
->>>>>>> main
