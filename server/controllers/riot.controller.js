@@ -15,8 +15,132 @@ function removeIrregularCharacters(str) {
     const regex = /[^a-zA-Z0-9_-]/g; // Expression régulière qui correspond aux caractères non autorisés
     return str.replace(regex, ''); // Supprime tous les caractères non autorisés
 }
-  
 
+module.exports.getMasteries = async (req, res) => 
+{
+    const encryptedSummonerId  = req.params.encryptedSummonerId;
+    const region        = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    var message         = '';
+    var code            = 500;
+
+    if (!encryptedSummonerId)
+    {
+        res.status(400).json(
+            {
+                message: 'Le nom du summoner est obligatoire'
+            }
+        );
+    }
+
+    const url = `https://${region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${encodeURIComponent(encryptedSummonerId)}`;
+
+    try
+    {
+        const apiMasteries = await api.Champion.masteryBySummoner(encryptedSummonerId, region);      
+
+        // Parcourir les données pour les mettre au format NGSI
+        const masteries          = apiMasteries.response;
+        const ngsiObjectJSON    = 
+        {
+            "actionType": "APPEND",
+            "entities": []
+        }
+
+        const entities      = {};
+        entities["id"]      = encryptedSummonerId;
+        entities["type"]    = "Masteries";
+
+        for (let i=0;i<masteries.length;i++)
+        {    
+            stats={};
+            
+            for (const key in masteries[i])
+            {
+                if (key !== "summonerId" && key !== "championId")
+                {
+                    stats[key] = ngsi.parseValue(masteries[i][key]);
+                }                    
+            }
+
+            championId = masteries[i].championId.toString();
+            entities[championId] = 
+            {
+                "type":"Object",
+                "value":stats
+            };
+        }
+
+        ngsiObjectJSON.entities.push(entities);
+
+        const fiwareMasteries = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations des masteries dans le contexte FIWARE"
+            code    = 400;            
+        })
+
+        res.status(200).json({
+            message:    'Récupération des informations des masteries',
+            masteries:   apiMasteries.response,
+            data:       ngsiObjectJSON
+        });
+    }
+    catch (error)
+    {
+        res.status(code).json(
+            {
+                message:    message || 'Une erreur est survenue lors de la récupération des informations des masteries',
+                error:      error
+            }
+        )
+    }
+
+}
+
+module.exports.getCurrentGame = async (req, res) => 
+{
+    const encryptedSummonerId  = req.params.encryptedSummonerId;
+    const region        = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    var message         = '';
+    var code            = 500;
+
+    if (!encryptedSummonerId)
+    {
+        res.status(400).json(
+            {
+                message: 'Le nom du summoner est obligatoire'
+            }
+        );
+    }
+
+    try
+    {
+        const apiCurrentGame = await api.Spectator.activeGame(encryptedSummonerId, region);      
+        
+        res.status(200).json(
+            {
+              data: apiCurrentGame
+            }
+        )
+    }
+    catch (error)
+    {
+        res.status(code).json(
+            {
+                message:    message || 'Une erreur est survenue lors de la récupération des informations de la partie courrante',
+                error:      error
+            }
+        )
+    }
+}
+  
 module.exports.getSummoner = async (req, res) => 
 {
     const summonerName  = req.params.summonerName;
@@ -575,13 +699,7 @@ module.exports.getMasters = async (req, res) =>
                 code    = 400;
             })
         }
-        
-        
-
-
         // console.log("ngsiObjectJSON", ngsiObjectJSON);
-
-
 
         res.status(200).json({
             message:    'Récupération des informations des challengers',
@@ -596,6 +714,7 @@ module.exports.getMasters = async (req, res) =>
             error: error
         });
     }
+
 }
 
 module.exports.getMatchList = async (req, res) =>
@@ -812,10 +931,6 @@ module.exports.getMatch = async (req, res) =>
             message = "Une erreur est survenue lors de la mise à jour des informations de match dans le contexte FIWARE"
             code    = 400;
         })
-
-
-
-
 
         res.status(200).json({
             message:    'Récupération des informations des matchs',
