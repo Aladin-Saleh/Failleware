@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # **PROJET Failleware**
 *Aladin SALEH - Argaïl GISCLARD*  
 *Projet réalisé dans le cadre du cours de FIWARE de l'ESIEE*  
@@ -294,4 +293,28 @@ Les images Docker sont téléchargées et l'application est lancée.
 | RankedChallengerSummoner | Informations sur les joueurs classés challenger | id, name, profileIconId, summonerLevel, ... |
 | RankedGrandMasterSummoner | Informations sur les joueurs classés grand maître | id, name, profileIconId, summonerLevel, ... |
 | RankedMasterSummoner | Informations sur les joueurs classés maître | id, name, profileIconId, summonerLevel, ... |
->>>>>>> main
+
+
+
+# **Utilisation de l'API**
+
+## **FIWARE**
+
+Récupération de toutes les entités d'un type.
+```
+http://[ip-docker]:5000/api/fiware/:type
+```
+
+Récupération des entités par identifiant (non-unique).
+```
+http://[ip-docker]:5000/api/fiware/entities/:id
+```
+Possibilité de spécifier le type de l'entité rechercher par id.
+```
+http://[ip-docker]:5000/api/fiware/entities/:id?type=:type
+```
+
+Récupération des attributs uniquement par identifiant (non-unique).
+```
+http://[ip-docker]:5000/api/fiware/:id/attrs
+```
