@@ -156,6 +156,7 @@ Les images Docker sont téléchargées et l'application est lancée.
 | Match | Informations sur les parties | id, gameCreation, gameDuration, gameMode, ... |
 | MatchHistory | Informations sur l'historique des parties | id, accountId, startIndex, endIndex, totalGames, ... |
 
+
 # **Utilisation de l'API**
 
 ## **FIWARE**
