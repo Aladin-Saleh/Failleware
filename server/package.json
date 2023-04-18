@@ -16,6 +16,7 @@
     "express": "^4.18.2",
     "mongoose": "^7.0.3",
     "ngsi-parser": "^2.2.5",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "twisted": "^1.53.1"
   }
 }
