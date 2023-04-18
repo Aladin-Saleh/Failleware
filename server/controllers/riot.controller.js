@@ -9,10 +9,16 @@ const api = new LolApi(
 );
 
 
+function removeIrregularCharacters(str) {
+    const regex = /[^a-zA-Z0-9_-]/g; // Expression régulière qui correspond aux caractères non autorisés
+    return str.replace(regex, ''); // Supprime tous les caractères non autorisés
+}
+
+
 module.exports.getSummoner = async (req, res) => 
 {
     const summonerName  = req.params.summonerName;
-    const region        = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    const region        = req.query.region || 'EUW1'; // Par défaut, on prend l'EUW1
     var message         = '';
     var code            = 500;
 
@@ -25,19 +31,14 @@ module.exports.getSummoner = async (req, res) =>
         );
     }
 
-    const url = `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURIComponent(summonerName)}`;
-
     try
     {
 
-
-        const apiSummoner = await api.Summoner.getByName(summonerName, region);
-        
-        
+        const apiSummoner = await api.Summoner.getByName(summonerName, region.toUpperCase());
 
 
         // Parcourir les données pour les mettre au format NGSI
-        const summoner          = apiSummoner.data;
+        const summoner          = apiSummoner.response;
         const ngsiObjectJSON    = 
         {
             "actionType": "APPEND",
@@ -46,7 +47,8 @@ module.exports.getSummoner = async (req, res) =>
 
         const entities      = {};
 
-        entities["id"]      = summoner.name;
+        entities["id"]      = removeIrregularCharacters(summoner.name.trim().replace(/ /g, "_"))
+        console.log("entities['id']", removeIrregularCharacters(summoner.name.trim().replace(/ /g, "_")));
         entities["type"]    = "Summoner"; 
         for (const key in summoner)
         {
@@ -56,13 +58,13 @@ module.exports.getSummoner = async (req, res) =>
             } 
             else
             {
-                entities["accountId"] = ngsi.parseValue(summoner[key]); 
+                entities["summonerId"] = ngsi.parseValue(summoner[key]); 
             }
                 
         }
 
         ngsiObjectJSON.entities.push(entities);
-        // console.log("ngsiObjectJSON", ngsiObjectJSON);
+        console.log("ngsiObjectJSON", ngsiObjectJSON);
 
         const fiwareSummoner = await axios({
             method: 'POST',
@@ -73,7 +75,7 @@ module.exports.getSummoner = async (req, res) =>
             data: ngsiObjectJSON
         })
         .catch(error => {
-            console.log("error", error.response);
+            // console.log("error", error.response);
             message = "Une erreur est survenue lors de la mise à jour des informations du summoner dans le contexte FIWARE"
             code    = 400;            
         })
