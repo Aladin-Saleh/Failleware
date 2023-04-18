@@ -9,4 +9,8 @@ router.get('/summoner/:summonerName', riotController.getSummoner);
 // GET /api/riot/masteries/:encryptedSummonerId?region=euw1 (region is optional)
 router.get('/masteries/:encryptedSummonerId', riotController.getMasteries);
 
+// Récupération des informations de la partie courante du joueur si il est en game
+// GET /api/riot/spectator/:encryptedSummonerId?region=euw1 (region is optional)
+router.get('/spectator/:encryptedSummonerId', riotController.getCurrentGame);
+
 module.exports = router;

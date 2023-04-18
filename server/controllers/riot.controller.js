@@ -184,3 +184,42 @@ module.exports.getMasteries = async (req, res) =>
     }
 
 }
+
+
+module.exports.getCurrentGame = async (req, res) => 
+{
+    const encryptedSummonerId  = req.params.encryptedSummonerId;
+    const region        = req.query.region || 'euw1'; // Par défaut, on prend l'EUW1
+    var message         = '';
+    var code            = 500;
+
+    if (!encryptedSummonerId)
+    {
+        res.status(400).json(
+            {
+                message: 'Le nom du summoner est obligatoire'
+            }
+        );
+    }
+
+    try
+    {
+        const apiCurrentGame = await api.Spectator.activeGame(encryptedSummonerId, region);      
+        
+        res.status(200).json(
+            {
+              data: apiCurrentGame
+            }
+        )
+    }
+    catch (error)
+    {
+        res.status(code).json(
+            {
+                message:    message || 'Une erreur est survenue lors de la récupération des informations de la partie courrante',
+                error:      error
+            }
+        )
+    }
+
+}
