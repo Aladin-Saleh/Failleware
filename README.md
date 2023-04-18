@@ -155,3 +155,26 @@ Les images Docker sont téléchargées et l'application est lancée.
 | RankedMasterSummoner | Informations sur les joueurs classés maître | id, name, profileIconId, summonerLevel, ... |
 | Match | Informations sur les parties | id, gameCreation, gameDuration, gameMode, ... |
 | MatchHistory | Informations sur l'historique des parties | id, accountId, startIndex, endIndex, totalGames, ... |
+
+# **Utilisation de l'API**
+
+## **FIWARE**
+
+Récupération de toutes les entités d'un type.
+```
+http://[ip-docker]:5000/api/fiware/:type
+```
+
+Récupération des entités par identifiant (non-unique).
+```
+http://[ip-docker]:5000/api/fiware/entities/:id
+```
+Possibilité de spécifier le type de l'entité rechercher par id.
+```
+http://[ip-docker]:5000/api/fiware/entities/:id?type=:type
+```
+
+Récupération des attributs uniquement par identifiant (non-unique).
+```
+http://[ip-docker]:5000/api/fiware/:id/attrs
+```
