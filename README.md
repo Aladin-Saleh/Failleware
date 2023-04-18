@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # **PROJET Failleware**
 *Aladin SALEH - Argaïl GISCLARD*  
 *Projet réalisé dans le cadre du cours de FIWARE de l'ESIEE*  
