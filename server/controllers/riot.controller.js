@@ -117,57 +117,61 @@ module.exports.getMasteries = async (req, res) =>
 
     try
     {
-
-
-        const apiMasteries = await api.Summoner.masteryBySummoner(encryptedSummonerId, region);      
-
+        const apiMasteries = await api.Champion.masteryBySummoner(encryptedSummonerId, region);      
 
         // Parcourir les données pour les mettre au format NGSI
-        const masteries          = apiMasteries.data;
+        const masteries          = apiMasteries.response;
         const ngsiObjectJSON    = 
         {
             "actionType": "APPEND",
             "entities": []
-        } 
+        }
 
         const entities      = {};
-
         entities["id"]      = encryptedSummonerId;
-        entities["type"]    = "Masteries"; 
-        for (let i = 0; i<masteries.length; i++)
-        {
+        entities["type"]    = "Masteries";
+
+        for (let i=0;i<masteries.length;i++)
+        {    
+            stats={};
+            
             for (const key in masteries[i])
             {
-                if (key !== "summonerId")
+                if (key !== "summonerId" && key !== "championId")
                 {
-                    entities[key] = ngsi.parseValue(masteries[key]);
+                    stats[key] = ngsi.parseValue(masteries[i][key]);
                 }                    
             }
-                
+
+            championId = masteries[i].championId.toString();
+            entities[championId] = 
+            {
+                "type":"Object",
+                "value":stats
+            };
         }
 
         ngsiObjectJSON.entities.push(entities);
-        console.log("ngsiObjectJSON", ngsiObjectJSON);
 
-        // const fiwareSummoner = await axios({
-        //     method: 'POST',
-        //     url: `${process.env.FIWARE_URL}/v2/op/update`,
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     data: ngsiObjectJSON
-        // })
-        // .catch(error => {
-        //     console.log("error", error.response);
-        //     message = "Une erreur est survenue lors de la mise à jour des informations des masteries dans le contexte FIWARE"
-        //     code    = 400;            
-        // })
+        const fiwareMasteries = await axios({
+            method: 'POST',
+            url: `${process.env.FIWARE_URL}/v2/op/update`,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: ngsiObjectJSON
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la mise à jour des informations des masteries dans le contexte FIWARE"
+            code    = 400;            
+        })
 
-        // res.status(200).json({
-        //     message:    'Récupération des informations des masteries',
-        //     summoner:   apiSummoner.data,
-        //     data:       ngsiObjectJSON
-        // });
+        res.status(200).json({
+            message:    'Récupération des informations des masteries',
+            masteries:   apiMasteries.response,
+            data:       ngsiObjectJSON
+        });
     }
     catch (error)
     {

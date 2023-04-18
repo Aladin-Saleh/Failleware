@@ -17,6 +17,7 @@
     "mongoose": "^7.0.3",
     "ngsi-parser": "^2.2.5",
     "nodemon": "^2.0.22",
-    "ocb-sender": "^2.4.4"
+    "ocb-sender": "^2.4.4",
+    "twisted": "^1.53.1"
   }
 }
