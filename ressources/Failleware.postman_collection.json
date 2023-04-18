@@ -38,7 +38,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:1026/v2/entities?type=Match",
+							"raw": "http://127.0.0.1:1026/v2/entities?type=Summoner",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -54,7 +54,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Match"
+									"value": "Summoner"
 								}
 							]
 						}
@@ -90,245 +90,7 @@
 							"variable": [
 								{
 									"key": "summonerName",
-									"value": "Humble in Dèfeat"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récupération de toutes les données league of legend par tier, division, queue, region, page",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/leagues/:rank/:queue/:division/:page?region=euw1",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"leagues",
-								":rank",
-								":queue",
-								":division",
-								":page"
-							],
-							"query": [
-								{
-									"key": "region",
-									"value": "euw1"
-								}
-							],
-							"variable": [
-								{
-									"key": "rank",
-									"value": "I"
-								},
-								{
-									"key": "queue",
-									"value": "RANKED_SOLO_5x5"
-								},
-								{
-									"key": "division",
-									"value": "DIAMOND"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récupération d'un rank via summonerID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/rank/:summonerId",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"rank",
-								":summonerId"
-							],
-							"variable": [
-								{
-									"key": "summonerId",
-									"value": "e7ThG7T5_xsB9vBWqOCEqPmJeEoTsiCU83U2sV4SLY5-s1uRvaEpKK4c8w"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récupération des challengers par queue et region",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/challengers/:queue",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"challengers",
-								":queue"
-							],
-							"variable": [
-								{
-									"key": "queue",
-									"value": "RANKED_SOLO_5x5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récupération des grandmasters par queue et region",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/grandmasters/:queue",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"grandmasters",
-								":queue"
-							],
-							"variable": [
-								{
-									"key": "queue",
-									"value": "RANKED_SOLO_5x5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récupération des masters par queue et region",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/masters/:queue",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"masters",
-								":queue"
-							],
-							"variable": [
-								{
-									"key": "queue",
-									"value": "RANKED_SOLO_5x5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récuperer la listes des dernières partie d'un joueur pas son puuid",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/matchlist/:puuid",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"matchlist",
-								":puuid"
-							],
-							"variable": [
-								{
-									"key": "puuid",
-									"value": "DEZt6GqI_7GhPtm7wZG2RFLC_EKtoaFuucaEFGUMgGcqQa1FurPUWOtBU1AP-cHXgtkuy4baMqrF7w"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Récuperer une partie par son id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://172.27.96.148:5000/api/riot/match/:matchId",
-							"protocol": "http",
-							"host": [
-								"172",
-								"27",
-								"96",
-								"148"
-							],
-							"port": "5000",
-							"path": [
-								"api",
-								"riot",
-								"match",
-								":matchId"
-							],
-							"variable": [
-								{
-									"key": "matchId",
-									"value": "EUW1_6354607073"
+									"value": "OTP BIG WOLF"
 								}
 							]
 						}
@@ -338,4 +100,3 @@
 			]
 		}
 	]
-}
