@@ -596,11 +596,6 @@ module.exports.getMasters = async (req, res) =>
             error: error
         });
     }
-
-
-
-
-
 }
 
 module.exports.getMatchList = async (req, res) =>
@@ -678,14 +673,6 @@ module.exports.getMatchList = async (req, res) =>
             error: error
         });
     }
-
-
-
-
-
-
-
-
 
 }
 
