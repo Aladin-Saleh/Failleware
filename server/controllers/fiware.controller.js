@@ -155,7 +155,7 @@ module.exports.getSummoner = async (req, res) =>
     var message         = '';
     var code            = 500;
 
-    if (!id)
+    if (!summonerName)
     {
         res.status(400).json(
             {
