@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 const NavBar = () => {
   
@@ -29,9 +30,13 @@ const NavBar = () => {
             <NavLink to="/stats"> Statistiques </NavLink>
         </li>
 
-        <input type="button"  value="Connexion" className="right"/>
+        <li className="right"> 
+            <input type="button"  value="Connexion" />
+        </li>
 
-        <input type="text" placeholder="Search a summoner..." className="right" value={searchTerm} onChange={handleSearch}/>
+        <li className="right">
+            <input type="text" placeholder="Search a summoner..." value={searchTerm} onChange={handleSearch}/>
+        </li>
 
       </ul>
     </div>
