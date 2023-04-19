@@ -197,6 +197,37 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Récupérer les summoners dont le nom contient summonerName",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://172.27.96.148:5000/api/fiware/summoner/:summonerName",
+									"protocol": "http",
+									"host": [
+										"172",
+										"27",
+										"96",
+										"148"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fiware",
+										"summoner",
+										":summonerName"
+									],
+									"variable": [
+										{
+											"key": "summonerName",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}

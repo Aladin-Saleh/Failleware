@@ -147,3 +147,49 @@ module.exports.getAttributesByEntityId = async (req, res) =>
     }
 
 }
+
+
+module.exports.getSummoner = async (req, res) => 
+{
+    const summonerName = req.params.summonerName;
+    var message         = '';
+    var code            = 500;
+
+    if (!id)
+    {
+        res.status(400).json(
+            {
+                message: 'Le nom du type est obligatoire'
+            }
+        );
+    }
+
+    try
+    {
+        const fiwareSummoner = await axios({
+            method: 'GET',
+            url: `${process.env.FIWARE_URL}/v2/entities?idPattern=${summonerName}&type=Summoner}`
+        })
+        .then(response => {
+            res.status(200).json({
+                message:    'Récupération de l\'entité depuis FIWARE',
+                data: response.data
+            });
+        })
+        .catch(error => {
+            console.log("error", error);
+            message = "Une erreur est survenue lors de la récupération de l\'entité dans FIWARE"
+            code    = 400;            
+        })
+    }
+    catch (error)
+    {
+        res.status(code).json(
+            {
+                message:    message || 'Une erreur est survenue lors de la récupération de l\'entité depuis FIWARE',
+                error:      error
+            }
+        )
+    }
+
+}
