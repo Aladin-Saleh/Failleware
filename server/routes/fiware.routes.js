@@ -8,6 +8,8 @@ router.get('/entities/:id', fiwareController.getEntityById);
 
 router.get('/entities/:id/attrs', fiwareController.getAttributesByEntityId);
 
-router.get('/summoner/:summonerName', fiwareController.getSummoner);
+router.get('/types/:type/attrs/:attr/param/:value', fiwareController.getAttributesByType);
+
+router.get('/summoner/:idPattern', fiwareController.getSummoner);
 
 module.exports = router;

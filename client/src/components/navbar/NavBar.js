@@ -2,23 +2,32 @@ import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 
-const NavBar = () => {
-  const [summonerList, setSummonerList] = useState('');
+import Summoner from '../summoner/Summoner';
+import SearchBar from '../searchbar/SearchBar';
 
-  function handleSearch(event) {
-    event.preventDefault(); // Empeche le rechargement de la page
-    axios({
-        method: 'get',
-        url: `http://localhost:5000/api/fiware/summoner/${event.target.value}`
+const NavBar = () => {
+  const [summonerList, setSummonerList] = useState([]);
+  
+  const onSearchSubmit = async term => {
+    const res = await axios({
+      method: 'get',
+      url: `http://localhost:5000/api/fiware/summoner/${term}`
     })
     .then((res) => {
         console.log(res);
+        setSummonerList(res.data.data);
     })
     .catch((err) => {
         console.log(err);
     })
-  }
+    
+  };
 
+  const clearResults = () => setSummonerList([]);
+
+  const renderedSummoners = summonerList.map((summoner, i) => {
+    return <Summoner summoner={summoner} key={i} />
+  })
 
   return (
     <div className="nav-bar">
@@ -34,16 +43,19 @@ const NavBar = () => {
         <li>
             <NavLink to="/stats"> Statistiques </NavLink>
         </li>
-
+        
         <li className="right"> 
-            <input type="button"  value="Connexion" />
+            <input type="button" value="Connexion" />
         </li>
 
         <li className="right">
-            <input type="text" placeholder="Search a summoner..." onChange={handleSearch}/>
+          <SearchBar onSearchSubmit={onSearchSubmit} clearResults={clearResults}/>
+          <div className='renderedSummoners'>
+            {renderedSummoners}
+          </div>
         </li>
+
       </ul>
-      <p>{summonerList}</p>
     </div>
   );
 };
