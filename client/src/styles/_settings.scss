@@ -19,6 +19,20 @@ $main-font: 'Plus Jakarta Sans', sans-serif;
 {
     background-color: $color-dark-blue-3;
     font-family: $main-font;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app
+{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    
+    
+
 }
 
 a 

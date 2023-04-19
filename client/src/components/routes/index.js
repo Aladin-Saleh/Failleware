@@ -7,6 +7,7 @@ import { Route }                    from "react-router-dom";
 import Home from "../../pages/Home";
 import NavBar from "../navbar/NavBar";
 import NotFound from "../../pages/NotFound";
+import Connexion from "../../pages/Connexion";
 
 function index()
 {
@@ -15,6 +16,7 @@ function index()
             <NavBar />
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/connexion" element={<Connexion />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

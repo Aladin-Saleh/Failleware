@@ -17,8 +17,10 @@ const NavBar = () => {
             <NavLink to="/stats"> Statistiques </NavLink>
         </li>
 
-        <input type="button"  value="Connexion" className="right"/>
+        <input type="button"  value="Connexion" className="right" onClick={() => {window.location.href = '/connexion';}}/>
 
+        {/* Redirect on url on click */}
+        
         <input type="text" placeholder="Search..." className="right"/>
 
       </ul>
