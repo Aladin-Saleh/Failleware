@@ -1,6 +1,0 @@
-https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/KshP5SyIUIolnmOI75dIGp422PkWsmOxsUxDkgaJ7kosS51uFSm4sZpO2Q?api_key=RGAPI-66075bf4-a2f5-41d9-8509-3364a713add1
-=> Récupération des champions joués par le joueur
-
-
-https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/KshP5SyIUIolnmOI75dIGp422PkWsmOxsUxDkgaJ7kosS51uFSm4sZpO2Q?api_key=RGAPI-66075bf4-a2f5-41d9-8509-3364a713add1
-=> Récupération des joueurs par rank
