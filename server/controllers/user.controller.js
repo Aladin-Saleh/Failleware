@@ -2,7 +2,7 @@ const userModel = require('../models/user.model');
 
 
 
-
+const maxAge = 3600000 * 24 * 7;
 
 module.exports.signUp = async (req, res) => {
     const { login, riotAccount, password } = req.body;

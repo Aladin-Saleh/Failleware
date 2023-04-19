@@ -1,7 +1,7 @@
 const mongoose  = require('mongoose');
 
 
-mongoose.connect(`mongodb://172.18.0.3:27017/`,{
+mongoose.connect(`mongodb://172.18.0.2:27017/`,{
     // Set the collection name
     useNewUrlParser: true,
     useUnifiedTopology: true,

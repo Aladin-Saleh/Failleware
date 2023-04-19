@@ -42,3 +42,37 @@ a
 }
 
 
+button
+{
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    background: $color-gold-1;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+button:hover
+{
+    background: $color-gold-3;
+    color: #000000;
+    transition: all .3s ease-in-out;
+}
+
+button:active
+{
+    background: $color-gold-1;
+    color: #000000;
+    transition: all .3s ease-in-out;
+}
+
+button:focus
+{
+    outline: none;
+}
+
+
+

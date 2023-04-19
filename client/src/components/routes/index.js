@@ -4,10 +4,11 @@ import { Routes }                   from "react-router-dom";
 import { Route }                    from "react-router-dom";
 
 
-import Home from "../../pages/Home";
-import NavBar from "../navbar/NavBar";
-import NotFound from "../../pages/NotFound";
-import Connexion from "../../pages/Connexion";
+import Home         from "../../pages/Home";
+import NavBar       from "../navbar/NavBar";
+import NotFound     from "../../pages/NotFound";
+import Connexion    from "../../pages/Connexion";
+import Leaderboard  from "../../pages/Leaderboard";
 
 function index()
 {
@@ -17,6 +18,7 @@ function index()
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/connexion" element={<Connexion />} />
+                <Route path="/board" element={<Leaderboard />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

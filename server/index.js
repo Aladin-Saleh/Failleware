@@ -4,6 +4,7 @@ const express           = require('express');
 const app               = express();
 
 const cors              = require('cors');
+const cookieParser      = require("cookie-parser");
 
 const bodyParser        = require('body-parser');
 const riotRoutes        = require('./routes/riot.routes');
@@ -15,7 +16,7 @@ require('./databases/mongo.database');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(cookieParser());
 
 // const corsOption = {
 //     origin: process.env.CLIENT_URL,

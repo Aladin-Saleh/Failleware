@@ -28,6 +28,12 @@
         background: $color-gold-2;
 
 
+        .response
+        {
+            background-color: $color-gold-2;
+            color: #000000;
+        }
+
 
         input
         {
@@ -75,6 +81,13 @@
             outline: none;
         }
 
+
+        p
+        {
+            background: $color-gold-2;
+            color: #525050;
+            cursor: pointer;
+        }
         
     }
 
