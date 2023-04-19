@@ -17,6 +17,7 @@ function index()
                 <Route path="/" element={<Home />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
+            
         </Router>
             
     )

@@ -6,10 +6,17 @@ const NavBar = () => {
   const [summonerList, setSummonerList] = useState('');
 
   function handleSearch(event) {
-    axios
-    .get(`http://localhost:5000/api/fiware/summoner/${event.target.value}`)
-    .then(response => {setSummonerList(response.data);})
-    .catch(error => console.log(error));
+    event.preventDefault(); // Empeche le rechargement de la page
+    axios({
+        method: 'get',
+        url: `http://localhost:5000/api/fiware/summoner/${event.target.value}`
+    })
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
   }
 
 

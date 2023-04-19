@@ -31,7 +31,7 @@
             font-size: 1.1rem;
             border: none;
             border-radius: 25px;
-            background-color: $color-dark-blue-1;
+            background-color: $color-dark-blue-3;
             color: $color-gold-2;
         }
 
@@ -41,7 +41,7 @@
 
 
         input[type=text]:hover {
-            background-color: $color-dark-blue-3;
+            background-color: $color-blue-1;
             transition: 0.5s;
         }
 
@@ -53,14 +53,14 @@
             font-size: 1.1rem;
             border: none;
             border-radius: 25px;
-            background-color: $color-dark-blue-1;
+            background-color: $color-dark-blue-3;
             color: $color-gold-2;
             cursor: pointer;
         }
 
         input[type=button]:hover
         {
-            background-color: $color-dark-blue-3;
+            background-color: $color-blue-1;
             transition: 0.5s;
         }
 
