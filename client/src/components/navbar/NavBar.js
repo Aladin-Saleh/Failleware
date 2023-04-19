@@ -3,15 +3,11 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const NavBar = () => {
-  
-  const [searchTerm, setSearchTerm] = useState('');
   const [summonerList, setSummonerList] = useState('');
 
   function handleSearch(event) {
-    setSearchTerm(event.target.value);
-    console.log(event.target.value);
     axios
-    .get(`http://172.24.9.146:5000/api/fiware/summoner/${event.target.value}`)
+    .get(`http://localhost:5000/api/fiware/summoner/${event.target.value}`)
     .then(response => {setSummonerList(response.data);})
     .catch(error => console.log(error));
   }
