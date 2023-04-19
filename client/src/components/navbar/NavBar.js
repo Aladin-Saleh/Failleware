@@ -5,13 +5,14 @@ import axios from "axios";
 const NavBar = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
+  const [summonerList, setSummonerList] = useState('');
 
   function handleSearch(event) {
     setSearchTerm(event.target.value);
     console.log(event.target.value);
     axios
     .get(`http://172.24.9.146:5000/api/fiware/summoner/${event.target.value}`)
-    .then(response => console.log(response.data))
+    .then(response => {setSummonerList(repsonse.data);})
     .catch(error => console.log(error));
   }
 
@@ -38,8 +39,8 @@ const NavBar = () => {
         <li className="right">
             <input type="text" placeholder="Search a summoner..." value={searchTerm} onChange={handleSearch}/>
         </li>
-
       </ul>
+      <p>{summonerList}</p>
     </div>
   );
 };
