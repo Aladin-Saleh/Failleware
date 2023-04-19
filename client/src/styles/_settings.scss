@@ -17,8 +17,23 @@ $main-font: 'Plus Jakarta Sans', sans-serif;
 
 *
 {
+    
     background-color: $color-dark-blue-3;
     font-family: $main-font;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app
+{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    
+    
+
 }
 
 a 
@@ -28,3 +43,89 @@ a
 }
 
 
+button
+{
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    border-radius: 5px;
+    background: $color-gold-1;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+button:hover
+{
+    background: $color-gold-3;
+    color: #000000;
+    transition: all .3s ease-in-out;
+}
+
+button:active
+{
+    background: $color-gold-1;
+    color: #000000;
+    transition: all .3s ease-in-out;
+}
+
+button:focus
+{
+    outline: none;
+}
+
+
+
+table
+{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    font-size: 1.2rem;
+    text-align: left;
+    max-height: 400px;
+    padding: 10px;
+    border: 1px solid $color-gold-2;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    margin: 10px;
+    overflow: auto;
+    color: #ffffff;
+}
+
+thead
+{
+    background-color: $color-gold-2;
+    color: #ffffff;
+}
+
+tbody
+{
+    background-color: $color-gold-1;
+    color: #ffffff;
+}
+
+td
+{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+td:hover
+{
+    background-color: $color-blue-1;
+    cursor: pointer;
+}
+
+
+th
+{
+    background-color: $color-gold-2;
+    margin: 10;
+    padding: 10px;
+    color: #ddd;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

@@ -3,6 +3,53 @@ const axios = require('axios');
 const { response } = require('express');
 
 
+
+
+
+
+module.exports.getAttributesByType = async (req, res) =>
+{
+    const type = req.params.type;
+    const attr = req.params.attr;
+    const value = req.params.value;
+    var message         = '';
+    var code            = 500;
+
+    if (!type || !attr || !value)
+    {
+        res.status(400).json(
+            {
+                message: 'Le nom du type, de l\'attribut et de la valeur sont obligatoires'
+            }
+        );
+    }
+
+    try
+    {
+        axios({
+            method: 'GET',
+            // entities?type=RankedSummoner&q=tier==BRONZE
+            url: `${process.env.FIWARE_URL}/v2/entities?type=${type}&q=${attr}==${value}`
+        })
+        .then(response => {
+            console.log("response", response);
+            res.status(200).json({
+                message:    'Récupération des entités du type depuis FIWARE',
+                data: response.data
+            });
+        })
+    }
+    catch (error)
+    {
+        res.status(code).json(
+            {
+                message:    message || 'Une erreur est survenue lors de la récupération des entités du type depuis FIWARE',
+                error:      error
+            }
+        )
+    }
+}
+
 module.exports.getAllFromType = async (req, res) => 
 {
     const type  = req.params.type;
