@@ -33,7 +33,7 @@ const NavBar = () => {
         </li>
 
         <li className="right">
-            <input type="text" placeholder="Search a summoner..." value={searchTerm} onChange={handleSearch}/>
+            <input type="text" placeholder="Search a summoner..." onChange={handleSearch}/>
         </li>
       </ul>
       <p>{summonerList}</p>
