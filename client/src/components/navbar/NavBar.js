@@ -8,8 +8,9 @@ const NavBar = () => {
 
   function handleSearch(event) {
     setSearchTerm(event.target.value);
+    console.log(searchTerm);
     axios
-    .get(`http://127.0.0.1:5000/api/fiware/summoner/${searchTerm}`)
+    .get(`http://127.0.0.1  :5000/api/fiware/summoner/${searchTerm}`)
     .then(response => console.log(response.data))
     .catch(error => console.log(error));
   }
