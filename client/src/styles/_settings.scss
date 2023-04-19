@@ -17,6 +17,7 @@ $main-font: 'Plus Jakarta Sans', sans-serif;
 
 *
 {
+    
     background-color: $color-dark-blue-3;
     font-family: $main-font;
     margin: 0;
@@ -76,3 +77,55 @@ button:focus
 
 
 
+table
+{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    font-size: 1.2rem;
+    text-align: left;
+    max-height: 400px;
+    padding: 10px;
+    border: 1px solid $color-gold-2;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    margin: 10px;
+    overflow: auto;
+    color: #ffffff;
+}
+
+thead
+{
+    background-color: $color-gold-2;
+    color: #ffffff;
+}
+
+tbody
+{
+    background-color: $color-gold-1;
+    color: #ffffff;
+}
+
+td
+{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+td:hover
+{
+    background-color: $color-blue-1;
+    cursor: pointer;
+}
+
+
+th
+{
+    background-color: $color-gold-2;
+    margin: 10;
+    padding: 10px;
+    color: #ddd;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

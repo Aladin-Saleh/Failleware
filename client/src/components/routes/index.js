@@ -9,6 +9,7 @@ import NavBar       from "../navbar/NavBar";
 import NotFound     from "../../pages/NotFound";
 import Connexion    from "../../pages/Connexion";
 import Leaderboard  from "../../pages/Leaderboard";
+import Profil       from "../../pages/Profil";
 
 function index()
 {
@@ -19,6 +20,7 @@ function index()
                 <Route path="/" element={<Home />} />
                 <Route path="/connexion" element={<Connexion />} />
                 <Route path="/board" element={<Leaderboard />} />
+                <Route path="/profil/:id" element={<Profil />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>

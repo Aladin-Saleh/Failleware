@@ -37,6 +37,9 @@ const Leaderboard = () => {
     const handleProfil = (e) => {
         const id = e.target.id;
         console.log(id);
+        // Redirect to the profil page
+        window.location.href = `http://localhost:3000/profil/${id}`;
+
     };
 
 
@@ -56,11 +59,11 @@ const Leaderboard = () => {
                 console.log(res.data.data);
                 res.data.data.forEach((element) => {
                     container.push(
-                        <tr key={element.summonerId.value} id={element.summonerId.value} onClick={handleProfil}>
-                            <td id={element.summonerId.value}>{element.summonerName.value}</td>
-                            <td id={element.summonerId.value}>{element.leaguePoints.value}</td>
-                            <td id={element.summonerId.value}>{element.wins.value}</td>
-                            <td id={element.summonerId.value}>{element.losses.value}</td>
+                        <tr key={element.summonerId.value} id={element.summonerName.value} onClick={handleProfil}>
+                            <td id={element.summonerName.value}>{element.summonerName.value}</td>
+                            <td id={element.summonerName.value}>{element.leaguePoints.value}</td>
+                            <td id={element.summonerName.value}>{element.wins.value}</td>
+                            <td id={element.summonerName.value}>{element.losses.value}</td>
                         </tr>
                     )
                 });
@@ -90,11 +93,11 @@ const Leaderboard = () => {
                 console.log(res.data.data);
                 res.data.data.forEach((element) => {
                     container.push(
-                        <tr key={element.summonerId.value} id={element.summonerId.value} onClick={handleProfil}>
-                            <td id={element.summonerId.value}>{element.summonerName.value}</td>
-                            <td id={element.summonerId.value}>{element.leaguePoints.value}</td>
-                            <td id={element.summonerId.value}>{element.wins.value}</td>
-                            <td id={element.summonerId.value}>{element.losses.value}</td>
+                        <tr key={element.summonerId.value} id={element.summonerName.value} onClick={handleProfil}>
+                            <td id={element.summonerName.value}>{element.summonerName.value}</td>
+                            <td id={element.summonerName.value}>{element.leaguePoints.value}</td>
+                            <td id={element.summonerName.value}>{element.wins.value}</td>
+                            <td id={element.summonerName.value}>{element.losses.value}</td>
                         </tr>
                     )
                 });
