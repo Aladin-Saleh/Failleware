@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
+  
+  const [searchTerm, setSearchTerm] = useState('');
+
+  function handleSearch(event) {
+    setSearchTerm(event.target.value);
+    axios
+    .get(`http://127.0.0.1:5000/api/fiware/${searchTerm}?type=Summoner`)
+    .then(response => console.log(response.data))
+    .catch(error => console.log(error));
+  }
+
+
   return (
     <div className="nav-bar">
       <ul>
@@ -19,7 +31,7 @@ const NavBar = () => {
 
         <input type="button"  value="Connexion" className="right"/>
 
-        <input type="text" placeholder="Search..." className="right"/>
+        <input type="text" placeholder="Search a summoner..." className="right" value={searchTerm} onChange={handleSearch}/>
 
       </ul>
     </div>
