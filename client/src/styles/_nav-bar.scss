@@ -1,0 +1,114 @@
+.nav-bar {
+    // Display the navbar and its contents.
+    display: inline;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: $color-dark-blue-2;    
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    
+    // The navbar is fixed to the top of the page.
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+
+
+    ul 
+    {
+        list-style-type: none;
+        margin: 10px;
+        padding: 10px;
+        background-color: $color-dark-blue-2;
+
+        // Input text
+        input[type=text] {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 25px;
+            background-color: $color-dark-blue-1;
+            color: $color-gold-2;
+        }
+
+        input[type=text]:focus {
+            outline: none;
+        }
+
+
+        input[type=text]:hover {
+            background-color: $color-dark-blue-3;
+            transition: 0.5s;
+        }
+
+
+        input[type=button]
+        {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 25px;
+            background-color: $color-dark-blue-1;
+            color: $color-gold-2;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover
+        {
+            background-color: $color-dark-blue-3;
+            transition: 0.5s;
+        }
+
+
+        // Set input on the right side of the navbar.
+        .right
+        {
+            float: right;
+            margin: 10px;
+            padding: 10px;
+            background-color: $color-dark-blue-2;
+        }
+
+        
+
+        li
+        {
+            display: inline;
+            margin: 10px;
+            padding: 10px;
+            margin: 0 1rem;
+            background-color: $color-dark-blue-2;
+        }
+
+        a:hover:not(.connection, .left) {
+            // display a line under the link.
+            border-bottom: 5px solid $color-gold-1;
+            border-bottom-style: solid;
+            transition: all 0.2s ease-in-out;
+        }
+
+
+
+        a
+        {
+            text-decoration: none;
+            color: $color-gold-2;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            background-color: $color-dark-blue-2;
+        }
+
+        a:hover
+        {
+            color: $color-gold-3;
+            transition: 0.5s;
+        }
+    }
+
+
+}

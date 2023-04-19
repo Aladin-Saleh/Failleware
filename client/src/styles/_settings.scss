@@ -1,0 +1,30 @@
+$color-dark-blue-1: #0A1428;
+$color-dark-blue-2: #091428;
+$color-dark-blue-3: #0d2d6c;
+
+$color-gold-1: #785A28;
+$color-gold-2: #C89B3C;
+$color-gold-3: #F0E6D2;
+
+$color-blue-1: #005A82;
+$color-blue-2: #0AC8B9;
+$color-blue-3: #CDFAFA;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200&display=swap');
+$main-font: 'Plus Jakarta Sans', sans-serif;
+
+
+*
+{
+    background-color: $color-dark-blue-3;
+    font-family: $main-font;
+}
+
+a 
+{
+    text-decoration: none;
+    // color: inherit;
+}
+
+
