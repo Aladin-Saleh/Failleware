@@ -3,6 +3,8 @@ const dotenv            = require('dotenv').config({ path: './config/.env' });
 const express           = require('express');
 const app               = express();
 
+const cors              = require('cors');
+
 const bodyParser        = require('body-parser');
 const riotRoutes        = require('./routes/riot.routes');
 const fiwareRoutes      = require('./routes/fiware.routes');
@@ -10,7 +12,19 @@ const fiwareRoutes      = require('./routes/fiware.routes');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.all("*", (req, res, next) => {
+    let origin = req.get("origin");
 
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header(
+        "Access-Control-Allow-Methods",
+        "PUT,POST,GET,DELETE,OPTIONS,PATCH"
+    );
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
 
 // Route par default de l'API
 app.get('/', (req, res) => {
