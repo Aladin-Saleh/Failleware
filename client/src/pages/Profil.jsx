@@ -18,6 +18,9 @@ const Profil = () => {
     const [deathAverage, setDeathAverage] = useState(0);
     const [assistAverage, setAssistAverage] = useState(0);
 
+    const [isLoading, setIsLoading] = useState(true);
+
+
     useEffect(() => {
 
 
@@ -42,10 +45,13 @@ const Profil = () => {
 
                 })
         };
+        if (isLoading && killAverage === 0)
+        {
+            getSummoner();
+            // setIsLoading(false);
+        }
 
-        getSummoner();
-
-    }, []);
+    }, [isLoading]);
 
 
     const getMastery = async (encryptedSummonerId) => {
@@ -111,9 +117,13 @@ const Profil = () => {
                                     // deathAverage += data[key].value[0].deaths.value;
                                     // assistAverage += data[key].value[0].assists.value;
                                     console.log(document.getElementById(element));
-                                    document.getElementById(element).innerHTML = `
-                                        <td> Score : ${data[key].value[0].kills.value} / ${ data[key].value[0].deaths.value} / ${data[key].value[0].assists.value}</td>
-                                    `
+                                    document.getElementById(element).innerHTML = `<td> <h3>(${data[key].value[0].championName.value})</h3> Score : ${data[key].value[0].kills.value} / ${ data[key].value[0].deaths.value} / ${data[key].value[0].assists.value} \n
+                                    <p>Magic Damage : ${data[key].value[0].magicDamageDealtToChampions.value}</p>
+                                    <p>Physical Damage : ${data[key].value[0].physicalDamageDealtToChampions.value}</p>
+                                    <p>True Damage : ${data[key].value[0].trueDamageDealtToChampions.value}</p>
+                                    <p>Total Damage : ${data[key].value[0].totalDamageDealtToChampions.value}</p>
+                                    </td>`;
+
 
                                     setKillAverage(killAverage + data[key].value[0].kills.value);
                                     setDeathAverage(deathAverage + data[key].value[0].deaths.value);
@@ -168,7 +178,7 @@ const Profil = () => {
         <div className='profil'>
             <h1>Profil</h1>
             <h2>{summonerName.replaceAll("%20", ' ')} : LvL {summonerLevel}</h2>
-            {<h3>{killAverage} / {deathAverage} / {assistAverage}</h3>}
+            {<h3>{killAverage/20} / {deathAverage/20} / {assistAverage/20}</h3>}
             <div className='top3'>
                 <table>
                     <thead>
